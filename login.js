@@ -1,10 +1,7 @@
 async function login(event) {
-  // Prevent default action ie page direction
   event.preventDefault();
 
-  // Get form data
   const form = event.target;
-
   let fields = form.elements;
 
   let data = {
@@ -14,19 +11,15 @@ async function login(event) {
 
   form.reset();
 
-  let result = await sendRequest(`${server}/login`, 'POST', data);
- 
+  let result = await sendRequest(`${server}/token`, 'POST', data);
   
-  if ("error" in result) {
-    toast("Login Failed: ");
+  if ("detail" in result) {
+    toast("Login Failed: " + result.detail);
   } else {
-    toast("Logged Successful");
-    
+    toast("Login Successful");
     window.localStorage.setItem('access_token', result.access_token);
     window.location.href = 'app.html';
   }
-
 }
 
 document.forms['loginForm'].addEventListener('submit', login);
-// document.querySelector('#loginForm').onSubmit(login);
